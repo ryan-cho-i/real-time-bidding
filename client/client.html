@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Client Page</title>
+  </head>
+  <body>
+    <p>Hi, This is a page for advertisement</p>
+
+    <div>
+      <p>Message from Server: <span id="server-data"></span></p>
+    </div>
+
+    <!-- Image element to display the received URL -->
+    <img
+      id="image-display"
+      src=""
+      alt="Image from Server"
+      style="max-width: 400px; max-height: 400px"
+    />
+
+    <script>
+      // Set up a WebSocket connection
+      const socket = new WebSocket("ws://localhost:8080");
+
+      // When the socket connection is established
+      socket.addEventListener("open", function (event) {
+        console.log("WebSocket connection established!");
+      });
+
+      // When the socket receives a message from the server
+      socket.addEventListener("message", function (event) {
+        const data = JSON.parse(event.data);
+        const serverDataElement = document.getElementById("server-data");
+        serverDataElement.textContent = data;
+
+        // Set the received URL as the source of the image element
+        const imageDisplay = document.getElementById("image-display");
+        imageDisplay.src = data;
+      });
+    </script>
+  </body>
+</html>

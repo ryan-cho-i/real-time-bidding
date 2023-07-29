@@ -3,6 +3,8 @@ require("dotenv").config();
 
 const { Kafka, logLevel } = require("kafkajs");
 
+const axios = require("axios");
+
 // npm i mongoose
 const mongoose = require("mongoose");
 const User = require("./models/User");
@@ -42,6 +44,10 @@ const consumeMessage = async (consumer) => {
         const winner = data[0];
         const user = await User.findOne({ userId: winner.id });
         console.log(user.cdn);
+        await axios.post(
+          `http://localhost:${process.env.CLIENT_PORT}/advertisement`,
+          { url: user.cdn }
+        );
       },
     });
   } catch (error) {

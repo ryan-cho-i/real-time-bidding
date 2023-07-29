@@ -13,7 +13,11 @@ node sspServer &
 echo "Start DSP Server..."
 node dspServer &
 
-# # 
+#  
 echo "Start Consumer Server..."
 node consumer2 &
 node consumer1 &
+
+# 
+echo "Start Client Server..."
+node client/clientServer.js &
