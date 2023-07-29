@@ -2,10 +2,7 @@
 
 ## 1. Implement Video
 
-<img width="100%" src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/2c29fc7b-b42a-493b-865f-de033dba1522"/>
-
-<video src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/2c29fc7b-b42a-493b-865f-de033dba1522" controls="controls" style="max-width: 730px;">
-</video>
+<img width="100%" src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/5ad5ef9e-01eb-46d1-875b-a942830537dd"/>
 
 ## 1. Environment
 
@@ -15,9 +12,7 @@
 
 3. DevOps : Kafka, AWS
 
-4. Sure, I see you're trying to describe the architecture of a Real-Time Bidding system. The explanation is overall very clear, but I can help to streamline it and correct a few minor mistakes. Here is the corrected version:
-
-5. **Architecture**
+## 2. Architecture
 
 When the client page (http://localhost:${CLIENT_PORT}/) is opened, it sends an HTTP POST REQUEST (http://localhost:${SSP_PORT}/bidRequest/10) to the SSP Server.
 
@@ -41,7 +36,7 @@ One consumer searches for the winning ad in the database (MongoDB) and sends the
 
 The other consumer stores the data (logs) in MongoDB.
 
-Finally, after receiving the CDN link for the ad, the client fires the impression pixel.
+Finally, after receiving the CDN link for the ad, the client fires the impression pixel, using Web Socket (from client server to client.html).
 
 This basic structural overview depicts a robust system capable of handling advertising bids efficiently while negating potential race conditions using Redis.
 
@@ -53,4 +48,4 @@ Lastly, by storing data on a separate consumer server, the project enforces the 
 
 In conclusion, this architecture provides an efficient approach to handling and distributing ad bids. By harnessing technologies like Redis and Kafka, this system ensures efficient processing, robust handling of potential race conditions, and dependable delivery of messages. It achieves a balance between speed, reliability, and maintainability, making it an ideal solution for high-traffic web platforms seeking efficient ad management.
 
-2. Algorithm
+## 3. Algorithm
