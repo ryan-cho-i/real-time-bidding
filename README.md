@@ -2,9 +2,7 @@
 
 ## 1. Implement Video
 
-<!--
-<img width="100%" src="https://github.com/CodingStorageofSoo/EcommerceWeb/assets/78337318/d9451558-d702-4853-a11e-b07595589ae9
-"/> -->
+<img width="100%" src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/2c29fc7b-b42a-493b-865f-de033dba1522"/>
 
 <video src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/2c29fc7b-b42a-493b-865f-de033dba1522" controls="controls" style="max-width: 730px;">
 </video>
