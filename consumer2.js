@@ -39,11 +39,9 @@ const consumeMessage = async (consumer) => {
     await consumer.run({
       eachMessage: async ({ message }) => {
         const data = JSON.parse(message.value.toString());
-        const winner = data.ranking[0];
-
+        const winner = data[0];
+        console.log("Winner:", winner);
         await new Log({ result: winner }).save();
-
-        console.log(winner);
       },
     });
   } catch (error) {

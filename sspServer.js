@@ -11,10 +11,20 @@ app.use(express.json());
 const axios = require("axios");
 
 // npm i ioredis
-// redis-server
-// redis-cli
 const Redis = require("ioredis");
 const redisClient = new Redis();
+
+// npm i kafkajs
+const { Kafka } = require("kafkajs");
+
+const kafka = new Kafka({
+  clientId: "my-kafka-app",
+  brokers: ["localhost:9092"],
+});
+
+const topic = process.env.TOPIC;
+
+const producer = kafka.producer();
 
 async function getBidResponse(url, data) {
   try {
@@ -70,12 +80,12 @@ app.post("/bidRequest/:people", async (req, res) => {
           });
 
         console.log(ranking);
-        await axios.post(
-          `http://localhost:${process.env.KAFKA_PORT}/send-to-kafka/`,
-          {
-            ranking,
-          }
-        );
+
+        await producer.send({
+          topic: topic,
+          messages: [{ value: JSON.stringify(ranking) }],
+        });
+
         res.json(ranking);
       } catch (error) {
         console.error("Error in handling bid request:", error.message);
@@ -85,6 +95,7 @@ app.post("/bidRequest/:people", async (req, res) => {
 });
 
 const PORT = process.env.SSP_PORT;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await producer.connect();
   console.log(`SSP Server Listening on PORT ${PORT}`);
 });
