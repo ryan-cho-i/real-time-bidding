@@ -4,7 +4,7 @@
 
 <img width="80%" src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/5ad5ef9e-01eb-46d1-875b-a942830537dd"/>
 
-## 1. Environment
+## 2. Environment
 
 1. Web : ExpressJS
 
@@ -12,7 +12,7 @@
 
 3. DevOps : Kafka, AWS
 
-## 2. Architecture
+## 3. Architecture
 
 When the client page (http://localhost:${CLIENT_PORT}/) is opened, it sends an HTTP POST REQUEST (http://localhost:${SSP_PORT}/bidRequest/10) to the SSP Server.
 
@@ -48,4 +48,6 @@ Lastly, by storing data on a separate consumer server, the project enforces the 
 
 In conclusion, this architecture provides an efficient approach to handling and distributing ad bids. By harnessing technologies like Redis and Kafka, this system ensures efficient processing, robust handling of potential race conditions, and dependable delivery of messages. It achieves a balance between speed, reliability, and maintainability, making it an ideal solution for high-traffic web platforms seeking efficient ad management.
 
-## 3. Algorithm
+## 4. Algorithm
+
+Why do I have to use Sorted Set?
