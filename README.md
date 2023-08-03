@@ -48,6 +48,23 @@ Lastly, by storing data on a separate consumer server, the project enforces the 
 
 In conclusion, this architecture provides an efficient approach to handling and distributing ad bids. By harnessing technologies like Redis and Kafka, this system ensures efficient processing, robust handling of potential race conditions, and dependable delivery of messages. It achieves a balance between speed, reliability, and maintainability, making it an ideal solution for high-traffic web platforms seeking efficient ad management.
 
-## 4. Algorithm
+## 4. Algorithm (Heap VS SortedSet (TreeSet in JAVA))
 
-Why do I have to use Sorted Set?
+1. Time Complexity
+
+1) Heap
+
+   - Insertion: O(log N)
+   - Deletion: O(log N) (for deleting root), O(N) (for deleting any element)
+   - Peek (retrieving max or min): O(1)
+
+2) SortedSet
+   - Insertion: O(log N)
+   - Deletion: O(log N)
+   - Searching: O(log N)
+
+2. Duplicates
+
+1) Heap: A heap allows duplicate values. This means you can insert the value '5' twice in the heap, and it will appear twice.
+
+2) SortedSet: SortedSet doesn't allow insertion of duplicate items. If you attempt to insert a duplicate, the insert operation will simply ignore the request.
