@@ -12,7 +12,7 @@ const kafka = new Kafka({
 });
 
 // Topic from which messages will be consumed
-const topic = "test-topic";
+const topic = "bidding_results";
 
 // Create the first consumer instance with logLevel set to "WARN"
 const consumer1 = kafka.consumer({
@@ -24,7 +24,9 @@ const consumeMessage = async (consumer) => {
   try {
     // Connect to MongoDB
     await mongoose
-      .connect(process.env.MONGO_URI)
+      .connect(
+        "mongodb+srv://soo:12341@rtb.e20asj4.mongodb.net/?retryWrites=true&w=majority"
+      )
       .then(() => console.log("MongoDB Connected"));
 
     // Connect to the Kafka broker
@@ -40,10 +42,9 @@ const consumeMessage = async (consumer) => {
         const winner = data[0];
         const user = await User.findOne({ userId: winner.id });
         console.log(user.cdn);
-        await axios.post(
-          `http://localhost:${process.env.CLIENT_PORT}/advertisement`,
-          { url: user.cdn }
-        );
+        await axios.post(`http://localhost:8080/advertisement`, {
+          url: user.cdn,
+        });
       },
     });
   } catch (error) {

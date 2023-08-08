@@ -14,7 +14,7 @@
 
 ## 3. Architecture
 
-When the client page (http://localhost:${CLIENT_PORT}/) is opened, it sends an HTTP POST REQUEST (http://localhost:${SSP_PORT}/bidRequest/10) to the SSP Server.
+When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST (http://localhost:3000/bidRequest/10) to the SSP Server.
 
 Upon receiving the bid request from the client, the SSP Server broadcasts this request to all potential buyers through the DSPs.
 
@@ -36,7 +36,7 @@ One consumer searches for the winning ad in the database (MongoDB) and sends the
 
 The other consumer stores the data (logs) in MongoDB.
 
-Finally, after receiving the CDN link for the ad, the client fires the impression pixel, using Web Socket (from client server to client.html).
+Finally, after receiving the CDN link for the ad, the client fires the impression pixel, using Web Socket (http://localhost:8081/) from client server to client.html.
 
 This basic structural overview depicts a robust system capable of handling advertising bids efficiently while negating potential race conditions using Redis.
 
@@ -68,3 +68,7 @@ In conclusion, this architecture provides an efficient approach to handling and 
 1) Heap: A heap allows duplicate values. This means you can insert the value '5' twice in the heap, and it will appear twice.
 
 2) SortedSet: SortedSet doesn't allow insertion of duplicate items. If you attempt to insert a duplicate, the insert operation will simply ignore the request.
+
+## 5. Usage
+
+Download github file, type 'docker-compose up'. And after entering client address (http://localhost:8080/), advertisement will show up

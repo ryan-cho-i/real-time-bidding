@@ -18,7 +18,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_CREATE_TOPICS: "topic_name:1:1" # " Topic Name : Partition : Replication factor "
+      KAFKA_CREATE_TOPICS: "bidding_results:1:1" # " Topic Name : Partition : Replication factor "
 
   redis-server:
     image: "redis:latest"
@@ -38,20 +38,17 @@ services:
     build: ./consumer1
     container_name: consumer1
     depends_on:
-      - kafka
+      - kafka-server
 
   consumer2:
     build: ./consumer2
     container_name: consumer2
     depends_on:
-      - kafka
+      - kafka-server
 
   dsp-server:
     build: ./dsp-server
     container_name: dsp-server
-    depends_on:
-      - kafka-server
-      - redis-server
     ports:
       - "3001:3001"
 

@@ -14,7 +14,7 @@ const kafka = new Kafka({
   brokers: ["localhost:9092"],
 });
 
-const topic = process.env.TOPIC;
+const topic = "bidding_results";
 
 const producer = kafka.producer();
 
@@ -56,9 +56,7 @@ app.post("/bidRequest/:people", async (req, res) => {
     .exec(async () => {
       const urlList = [];
       for (let i = 0; i < people; i++) {
-        urlList.push(
-          `http://localhost:${process.env.DSP_PORT}/processBid/${i}`
-        );
+        urlList.push(`http://localhost:3001/processBid/${i}`);
       }
 
       try {
@@ -86,7 +84,7 @@ app.post("/bidRequest/:people", async (req, res) => {
     });
 });
 
-const PORT = process.env.SSP_PORT;
+const PORT = 3000;
 app.listen(PORT, async () => {
   await producer.connect();
   console.log(`SSP Server Listening on PORT ${PORT}`);

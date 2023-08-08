@@ -10,7 +10,7 @@ const kafka = new Kafka({
 });
 
 // Topic from which messages will be consumed
-const topic = "test-topic";
+const topic = "bidding_results";
 
 // Create the second consumer instance with logLevel set to "WARN"
 const consumer2 = kafka.consumer({
@@ -22,7 +22,9 @@ const consumeMessage = async (consumer) => {
   try {
     // Connect to MongoDB
     await mongoose
-      .connect(process.env.MONGO_URI)
+      .connect(
+        "mongodb+srv://soo:12341@rtb.e20asj4.mongodb.net/?retryWrites=true&w=majority"
+      )
       .then(() => console.log("MongoDB Connected"));
 
     // Connect to the Kafka broker
