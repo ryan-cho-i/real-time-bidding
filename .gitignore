@@ -1,5 +1,7 @@
-/node_modules
-/package-lock.json
+/client/node_modules
+/consumer-server1/node_modules
+/consumer-server1/node_modules
+/dsp-server/node_modules
+/ssp-server/node_modules
+
 .env
-/kafka_2.13-2.8.2
-dump.rdb
