@@ -71,7 +71,7 @@ In conclusion, this architecture provides an efficient approach to handling and 
 
 ## 5. Usage
 
-Download github file and type
+Download this github repository (https://github.com/ryan-cho-i/real-time-bidding.git) and type
 
 ```
 docker-compose up
