@@ -1,11 +1,7 @@
-// npm i dotenv
-require("dotenv").config();
-
 const { Kafka, logLevel } = require("kafkajs");
 
 const axios = require("axios");
 
-// npm i mongoose
 const mongoose = require("mongoose");
 const User = require("./models/User");
 

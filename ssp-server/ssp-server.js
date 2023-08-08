@@ -1,20 +1,12 @@
-// npm i dotenv
-require("dotenv").config();
-
-// npm init -y
-// npm i express
 const express = require("express");
 const app = express();
 app.use(express.json());
 
-// npm i axios
 const axios = require("axios");
 
-// npm i ioredis
 const Redis = require("ioredis");
 const redisClient = new Redis();
 
-// npm i kafkajs
 const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({

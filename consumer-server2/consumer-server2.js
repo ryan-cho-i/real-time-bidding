@@ -1,11 +1,7 @@
-// npm i dotenv
-require("dotenv").config();
-
-const { Kafka, logLevel } = require("kafkajs");
-
-// npm i mongoose
 const mongoose = require("mongoose");
 const Log = require("./models/Log");
+
+const { Kafka, logLevel } = require("kafkajs");
 
 // Replace 'localhost:9092' with your Kafka broker address
 const kafka = new Kafka({
