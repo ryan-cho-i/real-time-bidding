@@ -10,17 +10,17 @@
 
 2. Database : MongoDB, Redis
 
-3. DevOps : Kafka, AWS
+3. DevOps : Docker, Kafka, AWS
 
 ## 3. Architecture
 
-When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST (http://localhost:3000/bidRequest/10) to the SSP Server.
+When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST to the SSP Server. (http://localhost:3000/)
 
-Upon receiving the bid request from the client, the SSP Server broadcasts this request to all potential buyers through the DSPs.
+Upon receiving the bid request from the client, the SSP Server broadcasts this request to all potential buyers through the DSPs. (http://localhost:3001)
 
 The buyers, in response, send back their respective IDs and proposed prices to the SSP Server.
 
-The SSP Server receives these responses and validates their receipt. There could potentially be a 'race condition' at this stage. However, this problem is circumvented by employing Redis.
+The SSP Server receives these responses and validates their receipt. There could potentially be a 'race condition' at this stage. However, this problem is circumvented by employing Redis. (http://localhost:6379/)
 
 Redis has several advantages:
 
@@ -28,7 +28,7 @@ Redis has several advantages:
 2.  As an in-memory storage solution, Redis offers swift data processing.
 3.  Redis supports the SortedSet data structure, which delivers an efficient O(logN) time complexity for both data insertion and retrieval.
 
-Once the bid responses have been sorted using Redis, the results are relayed to consumers via Kafka. The SSP Server serves as a Producer, pushing the message into the message queue.
+Once the bid responses have been sorted using Redis, the results are relayed to consumers via Kafka. (http://localhost:9092/) The SSP Server serves as a Producer, pushing the message into the message queue.
 
 Two consumers (one for posting the ad and another for data storage) then fetch the message from the queue. This process is asynchronous, thereby optimizing high traffic handling and augmenting the overall speed of operations.
 
@@ -71,4 +71,10 @@ In conclusion, this architecture provides an efficient approach to handling and 
 
 ## 5. Usage
 
-Download github file, type 'docker-compose up'. And after entering client address (http://localhost:8080/), advertisement will show up
+Download github file and type
+
+```
+docker-compose up
+```
+
+After typing client address (http://localhost:8080/) on your browser, advertisement will show up
