@@ -1,20 +1,22 @@
-const mongoose = require("mongoose");
-const Log = require("./models/Log");
-
 const { Kafka, logLevel } = require("kafkajs");
+
+const axios = require("axios");
+
+const mongoose = require("mongoose");
+const User = require("./User");
 
 // Replace 'localhost:9092' with your Kafka broker address
 const kafka = new Kafka({
   clientId: "my-kafka-app",
-  brokers: ["localhost:9092"],
+  brokers: ["kafka:9092"],
 });
 
 // Topic from which messages will be consumed
-const topic = "bidding_results";
+const topic = "biddingResults";
 
-// Create the second consumer instance with logLevel set to "WARN"
-const consumer2 = kafka.consumer({
-  groupId: "consumer-group-2",
+// Create the first consumer instance with logLevel set to "WARN"
+const consumer1 = kafka.consumer({
+  groupId: "consumer-group-1",
   logLevel: logLevel.WARN,
 });
 
@@ -38,8 +40,11 @@ const consumeMessage = async (consumer) => {
       eachMessage: async ({ message }) => {
         const data = JSON.parse(message.value.toString());
         const winner = data[0];
-        console.log("Winner:", winner);
-        await new Log({ result: winner }).save();
+        const user = await User.findOne({ userId: winner.id });
+        console.log(user.cdn);
+        await axios.post(`http://client:8080/advertisement`, {
+          url: user.cdn,
+        });
       },
     });
   } catch (error) {
@@ -48,4 +53,4 @@ const consumeMessage = async (consumer) => {
 };
 
 // Start consuming messages for both consumers
-consumeMessage(consumer2);
+consumeMessage(consumer1);

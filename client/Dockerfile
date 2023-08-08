@@ -6,8 +6,8 @@ COPY package*.json /app
 
 RUN npm ci
 
-COPY client-server.js /app
+COPY client.js /app
 
 COPY client.html /app
 
-CMD ["node", "client-server.js"]
+CMD ["node", "client.js"]

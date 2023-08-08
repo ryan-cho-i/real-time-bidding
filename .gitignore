@@ -1,6 +1,6 @@
 /client/node_modules
-/consumer-server1/node_modules
-/consumer-server2/node_modules
-/dsp-server/node_modules
-/ssp-server/node_modules
+/consumer1/node_modules
+/consumer2/node_modules
+/dsp/node_modules
+/ssp/node_modules
 .env

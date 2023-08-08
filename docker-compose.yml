@@ -7,7 +7,7 @@ services:
     ports:
       - "2181:2181"
 
-  kafka-server:
+  kafka:
     image: wurstmeister/kafka
     depends_on:
       - zookeeper
@@ -18,19 +18,19 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_CREATE_TOPICS: "bidding_results:1:1" # " Topic Name : Partition : Replication factor "
+      KAFKA_CREATE_TOPICS: "biddingResults:1:1" # " Topic Name : Partition : Replication factor "
 
-  redis-server:
+  redis:
     image: "redis:latest"
     ports:
       - 6379:6379
 
-  ssp-server:
-    build: ./ssp-server
-    container_name: ssp-server
+  ssp:
+    build: ./ssp
+    container_name: ssp
     depends_on:
-      - kafka-server
-      - redis-server
+      - kafka
+      - redis
     ports:
       - "3000:3000"
 
@@ -38,17 +38,17 @@ services:
     build: ./consumer1
     container_name: consumer1
     depends_on:
-      - kafka-server
+      - kafka
 
   consumer2:
     build: ./consumer2
     container_name: consumer2
     depends_on:
-      - kafka-server
+      - kafka
 
-  dsp-server:
-    build: ./dsp-server
-    container_name: dsp-server
+  dsp:
+    build: ./dsp
+    container_name: dsp
     ports:
       - "3001:3001"
 
@@ -57,3 +57,4 @@ services:
     container_name: client
     ports:
       - "8080:8080"
+      - "8081:8081"

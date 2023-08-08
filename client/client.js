@@ -18,7 +18,7 @@ const axios = require("axios");
 
 app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "client.html"));
-  await axios.post(`http://localhost:3000/bidRequest/10`, {});
+  await axios.post(`http://ssp:3000/bidRequest/10`, {});
 });
 
 app.post("/advertisement", async (req, res) => {

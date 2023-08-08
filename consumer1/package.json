@@ -1,8 +1,8 @@
 {
-  "name": "consumer-server1",
+  "name": "consumer1",
   "version": "1.0.0",
   "description": "",
-  "main": "consumer-server1.js",
+  "main": "consumer1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -5,16 +5,19 @@ app.use(express.json());
 const axios = require("axios");
 
 const Redis = require("ioredis");
-const redisClient = new Redis();
+const redisClient = new Redis({
+  host: "redis",
+  port: 6379,
+});
 
 const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({
   clientId: "my-kafka-app",
-  brokers: ["localhost:9092"],
+  brokers: ["kafka:9092"],
 });
 
-const topic = "bidding_results";
+const topic = "biddingResults";
 
 const producer = kafka.producer();
 
@@ -56,7 +59,7 @@ app.post("/bidRequest/:people", async (req, res) => {
     .exec(async () => {
       const urlList = [];
       for (let i = 0; i < people; i++) {
-        urlList.push(`http://localhost:3001/processBid/${i}`);
+        urlList.push(`http://dsp:3001/processBid/${i}`);
       }
 
       try {

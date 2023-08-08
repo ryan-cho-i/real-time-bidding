@@ -6,6 +6,6 @@ COPY package*.json /app
 
 RUN npm ci
 
-COPY consumer-server2.js /app
+COPY dsp.js /app
 
-CMD ["node", "consumer-server2.js"]
+CMD ["node", "dsp.js"]
