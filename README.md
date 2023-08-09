@@ -94,3 +94,21 @@ docker-compose up
 ```
 
 After typing client address (http://localhost:8080/) on your browser, advertisement will show up
+
+##
+
+테스트 하는 과정에서 어려웠던 점
+
+mongoo
+
+oDB
+mongoose
+.connect(
+"mongodb+srv://soo:12341@rtb.e20asj4.mongodb.net/?retryWrites=true&w=majority"
+)
+.then(() => {
+console.log("MongoDB Connected");
+
+    app.get("/firePixel/:id", async (req, res) => {
+
+기본적인 콜백의 순서만 바뀌어도 편하다

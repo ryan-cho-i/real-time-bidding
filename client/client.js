@@ -23,6 +23,7 @@ app.get("/", async (req, res) => {
 
 app.post("/advertisement", async (req, res) => {
   broadcastData({ id: req.body.id, url: req.body.url });
+  console.log({ id: req.body.id, url: req.body.url });
   res.send({ id: req.body.id, url: req.body.url });
 });
 

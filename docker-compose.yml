@@ -22,6 +22,7 @@ services:
 
   redis:
     image: "redis:latest"
+    container_name: redis
     ports:
       - 6379:6379
 
@@ -58,3 +59,9 @@ services:
     ports:
       - "8080:8080"
       - "8081:8081"
+
+  update:
+    build: ./update
+    container_name: update
+    ports:
+      - "8082:8082"

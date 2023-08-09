@@ -73,11 +73,13 @@ app.post("/bidRequest/:people", async (req, res) => {
             return result.map((data) => JSON.parse(data));
           });
 
-        console.log(ranking);
+        const data = { id: uuidv4(), ranking: ranking };
+
+        console.log(data);
 
         await producer.send({
           topic: topic,
-          messages: [{ id: uuidv4(), value: JSON.stringify(ranking) }],
+          messages: [{ value: JSON.stringify(data) }],
         });
 
         res.json(ranking);
