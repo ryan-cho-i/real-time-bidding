@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const LogSchema = new mongoose.Schema(
   {
-    result: { type: Object, required: true },
+    winner: { type: Object, required: true },
+    firePixel: { type: String, required: true },
+    click: { type: String, required: true },
   },
   { timestamps: true }
 );

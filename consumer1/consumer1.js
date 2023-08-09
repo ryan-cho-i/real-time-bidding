@@ -38,11 +38,13 @@ const consumeMessage = async (consumer) => {
     // Start consuming messages
     await consumer.run({
       eachMessage: async ({ message }) => {
-        const data = JSON.parse(message.value.toString());
+        const id = message.id;
+        const data = JSON.parse(message.value);
         const winner = data[0];
         const user = await User.findOne({ userId: winner.id });
         console.log(user.cdn);
         await axios.post(`http://client:8080/advertisement`, {
+          id: id,
           url: user.cdn,
         });
       },

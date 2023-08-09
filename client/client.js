@@ -22,8 +22,8 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/advertisement", async (req, res) => {
-  broadcastData(req.body.url);
-  res.send({ result: req.body.url });
+  broadcastData({ id: req.body.id, url: req.body.url });
+  res.send({ id: req.body.id, url: req.body.url });
 });
 
 const PORT = 8080;

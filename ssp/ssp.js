@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+const { v4: uuidv4 } = require("uuid");
 
 const axios = require("axios");
 
@@ -76,7 +77,7 @@ app.post("/bidRequest/:people", async (req, res) => {
 
         await producer.send({
           topic: topic,
-          messages: [{ value: JSON.stringify(ranking) }],
+          messages: [{ id: uuidv4(), value: JSON.stringify(ranking) }],
         });
 
         res.json(ranking);

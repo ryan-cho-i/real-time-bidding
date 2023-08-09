@@ -24,7 +24,7 @@
 
         // When the socket receives a message from the server
         socket.addEventListener("message", (event) => {
-          adImage.src = JSON.parse(event.data);
+          adImage.src = JSON.parse(event.data.url);
 
           // To check whether advertisement is turned on
           let rect = adImage.getBoundingClientRect();
@@ -35,7 +35,7 @@
           if (isVisible) {
             console.log(isVisible);
             let impressionPixel = document.getElementById("impression-pixel");
-            impressionPixel.src = "http://consumer2:3002/firePixel";
+            impressionPixel.src = `http://consumer2:3002/firePixel/${event.data.id}`;
           }
         });
       });
