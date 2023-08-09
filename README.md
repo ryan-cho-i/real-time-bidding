@@ -12,31 +12,35 @@
 
 3. DevOps : Docker, Kafka, AWS
 
-## 3. Architecture
+## 3. System Design
 
-When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST to the SSP Server. (http://localhost:3000/)
+1. When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST to the SSP Server. (http://localhost:3000/)
 
-Upon receiving the bid request from the client, the SSP Server broadcasts this request to all potential buyers through the DSPs. (http://localhost:3001)
+2. Upon receiving the bid request from the client, the SSP Server broadcasts this request to all potential buyers through the DSPs. (http://localhost:3001)
 
-The buyers, in response, send back their respective IDs and proposed prices to the SSP Server.
+3. The buyers, in response, send back their respective IDs and proposed prices to the SSP Server.
 
-The SSP Server receives these responses and validates their receipt. There could potentially be a 'race condition' at this stage. However, this problem is circumvented by employing Redis. (http://localhost:6379/)
+4. The SSP Server receives these responses and tracks their sequence.
 
-Redis has several advantages:
+   - There could potentially be a 'race condition' at this stage. However, this problem is circumvented by employing Redis. (http://localhost:6379/)
 
-1.  Redis operates on a single thread, making it immune to race conditions.
-2.  As an in-memory storage solution, Redis offers swift data processing.
-3.  Redis supports the SortedSet data structure, which delivers an efficient O(logN) time complexity for both data insertion and retrieval.
+5. Once the bid responses have been sorted using Redis, the results are relayed to consumers via Kafka. (http://localhost:9092/)
 
-Once the bid responses have been sorted using Redis, the results are relayed to consumers via Kafka. (http://localhost:9092/) The SSP Server serves as a Producer, pushing the message into the message queue.
+   - The SSP Server serves as a Producer, pushing the message into the message queue.
 
-Two consumers (one for posting the ad and another for data storage) then fetch the message from the queue. This process is asynchronous, thereby optimizing high traffic handling and augmenting the overall speed of operations.
+6. Two consumers (one for posting the ad and another for data storage) then fetch the message from the queue.
 
-One consumer searches for the winning ad in the database (MongoDB) and sends the ad to the client page. The ad link is CDN-based, thus enabling rapid ad posting.
+   - This process is asynchronous, thereby optimizing high traffic handling and augmenting the overall speed of operations.
 
-The other consumer stores the data (logs) in MongoDB.
+7. Consumer1 searches for the winner's ad in the database (MongoDB) and sends the ad to the client page. (http://localhost:8080/advertisement)
 
-Finally, after receiving the CDN link for the ad, the client fires the impression pixel, using Web Socket (http://localhost:8081/) from client server to client.html.
+   - The ad link is CDN-based, thus enabling rapid ad posting.
+
+8. Consumer2 stores the data {"fire" : false" , "click" : "false"} in MongoDB.
+
+9. After receiving the CDN link for the ad, the client fires the impression pixel, using Web Socket (http://localhost:8081/), and sends the log to the consumer2 (http://consumer2:3002/firePixel)
+
+10. Whenever data is received ("fire", "click"), Consumer2 update the data.
 
 This basic structural overview depicts a robust system capable of handling advertising bids efficiently while negating potential race conditions using Redis.
 
@@ -48,9 +52,15 @@ Lastly, by storing data on a separate consumer server, the project enforces the 
 
 In conclusion, this architecture provides an efficient approach to handling and distributing ad bids. By harnessing technologies like Redis and Kafka, this system ensures efficient processing, robust handling of potential race conditions, and dependable delivery of messages. It achieves a balance between speed, reliability, and maintainability, making it an ideal solution for high-traffic web platforms seeking efficient ad management.
 
-## 4. Algorithm (Heap VS SortedSet (TreeSet in JAVA))
+## 4. Why Do I use Redis?
 
-1. Time Complexity
+Redis has several advantages:
+
+1.  Redis operates on a single thread, making it immune to race conditions.
+2.  As an in-memory storage solution, Redis offers swift data processing.
+3.  Redis supports the SortedSet data structure, which delivers an efficient O(logN) time complexity for both data insertion and retrieval.
+
+4.  Time Complexity
 
 1) Heap
 

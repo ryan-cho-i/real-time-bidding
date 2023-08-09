@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Client Page</title>
+    <title>Advertisement Page</title>
   </head>
   <body>
     <p>Hi, This is a page for advertisement</p>
 
-    <div>
-      <p>Message from Server: <span id="server-data"></span></p>
-    </div>
-
     <!-- Image element to display the received URL -->
-    <img
-      id="image-display"
-      src=""
-      alt="Image from Server"
-      style="max-width: 400px; max-height: 400px"
-    />
+    <img id="ad-image" />
+
+    <!-- Impression Pixel -->
+    <img id="impression-pixel" />
 
     <script>
-      // Set up a WebSocket connection
       const socket = new WebSocket("ws://localhost:8081");
 
-      // When the socket connection is established
-      socket.addEventListener("open", function (event) {
+      socket.addEventListener("open", (event) => {
         console.log("WebSocket connection established!");
       });
 
-      // When the socket receives a message from the server
-      socket.addEventListener("message", function (event) {
-        const data = JSON.parse(event.data);
-        const serverDataElement = document.getElementById("server-data");
-        serverDataElement.textContent = data;
+      window.addEventListener("load", async () => {
+        let adImage = document.getElementById("ad-image");
 
-        // Set the received URL as the source of the image element
-        const imageDisplay = document.getElementById("image-display");
-        imageDisplay.src = data;
+        // When the socket receives a message from the server
+        socket.addEventListener("message", (event) => {
+          adImage.src = JSON.parse(event.data);
+
+          // To check whether advertisement is turned on
+          let rect = adImage.getBoundingClientRect();
+          let isVisible =
+            rect.bottom - rect.top > 0 && rect.right - rect.left > 0;
+
+          // If AD is turned on, fire impression pixel
+          if (isVisible) {
+            console.log(isVisible);
+            let impressionPixel = document.getElementById("impression-pixel");
+            impressionPixel.src = "http://consumer2:3002/firePixel";
+          }
+        });
       });
     </script>
   </body>

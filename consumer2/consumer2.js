@@ -1,3 +1,7 @@
+const express = require("express");
+const app = express();
+app.use(express.json());
+
 const { Kafka, logLevel } = require("kafkajs");
 
 const mongoose = require("mongoose");
@@ -49,3 +53,37 @@ const consumeMessage = async (consumer) => {
 
 // Start consuming messages for both consumers
 consumeMessage(consumer2);
+
+const { PNG } = require("pngjs");
+
+app.get("/firePixel", (req, res) => {
+  const width = 10;
+  const height = 10;
+
+  let png = new PNG({
+    width,
+    height,
+    filterType: 4,
+  });
+
+  for (let y = 0; y < png.height; y++) {
+    for (let x = 0; x < png.width; x++) {
+      let idx = (png.width * y + x) << 2;
+
+      // Red color
+      png.data[idx] = 255;
+      png.data[idx + 1] = 0;
+      png.data[idx + 2] = 0;
+      png.data[idx + 3] = 255;
+    }
+  }
+
+  res.setHeader("Content-Type", "image/png");
+  png.pack().pipe(res);
+});
+
+const PORT = 3002;
+app.listen(PORT, async () => {
+  await producer.connect();
+  console.log(`SSP Server Listening on PORT ${PORT}`);
+});
