@@ -44,6 +44,18 @@
 
 11. Whenever data is received ("fire", "click"), Consumer2 update the data.
 
+## 4. Problem & Solution
+
+3. 데이터베이스 접근 속도
+
+4. Ranking System
+
+5. Race Condition
+
+6. 병렬 처리의 어려움
+
+7. 이미지 데이터 저장
+
 ## 4. Why Do I use Redis?
 
 Redis has several advantages:

@@ -1,3 +1,5 @@
+const { MONGO_URL } = process.env;
+
 const { Kafka, logLevel } = require("kafkajs");
 
 const mongoose = require("mongoose");
@@ -22,9 +24,7 @@ const consumeMessage = async (consumer) => {
   try {
     // Connect to MongoDB
     await mongoose
-      .connect(
-        "mongodb+srv://soo:12341@rtb.e20asj4.mongodb.net/?retryWrites=true&w=majority"
-      )
+      .connect(MONGO_URL)
       .then(() => console.log("MongoDB Connected"));
 
     // Connect to the Kafka broker

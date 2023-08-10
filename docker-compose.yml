@@ -40,12 +40,16 @@ services:
     container_name: consumer1
     depends_on:
       - kafka
+    env_file:
+      - .env
 
   consumer2:
     build: ./consumer2
     container_name: consumer2
     depends_on:
       - kafka
+    env_file:
+      - .env
 
   dsp:
     build: ./dsp
@@ -65,3 +69,5 @@ services:
     container_name: update
     ports:
       - "3002:3002"
+    env_file:
+      - .env
