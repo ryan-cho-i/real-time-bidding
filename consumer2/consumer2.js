@@ -37,7 +37,7 @@ const consumeMessage = async (consumer) => {
     await consumer.run({
       eachMessage: async ({ message }) => {
         const { id, ranking } = JSON.parse(message.value);
-        const winner = data.ranking[0];
+        const winner = ranking[0];
         const tmp = {
           id: id,
           winner: winner,

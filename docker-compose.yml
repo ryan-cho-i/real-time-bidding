@@ -64,4 +64,4 @@ services:
     build: ./update
     container_name: update
     ports:
-      - "8082:8082"
+      - "3002:3002"

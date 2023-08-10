@@ -22,21 +22,31 @@
       window.addEventListener("load", async () => {
         let adImage = document.getElementById("ad-image");
 
-        // When the socket receives a message from the server
-        socket.addEventListener("message", (event) => {
-          const { id, url } = JSON.parse(event.data);
-          adImage.src = url;
+        adImage.addEventListener("load", () => {
+          // Retrieve the id from the adImage data attribute
+          let id = adImage.dataset.adId;
 
-          // To check whether advertisement is turned on
+          // Check whether the advertisement is turned on
           let rect = adImage.getBoundingClientRect();
           let isVisible =
             rect.bottom - rect.top > 0 && rect.right - rect.left > 0;
 
+          console.log("isVisible", isVisible);
+
           // If AD is turned on, fire impression pixel
           if (isVisible) {
             let impressionPixel = document.getElementById("impression-pixel");
-            impressionPixel.src = `http://update:8082/firePixel/${id}`;
+            console.log(`http://localhost:3002/firePixel/${id}`);
+            impressionPixel.src = `http://localhost:3002/firePixel/${id}`;
           }
+        });
+
+        // When the socket receives a message from the server
+        socket.addEventListener("message", async (event) => {
+          const { id, url } = await JSON.parse(event.data);
+          // Store the id in the adImage data attribute
+          adImage.dataset.adId = id;
+          adImage.src = url;
         });
       });
     </script>

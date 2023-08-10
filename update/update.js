@@ -7,6 +7,10 @@ const Log = require("./Log");
 
 const { PNG } = require("pngjs");
 
+const cors = require("cors");
+
+app.use(cors());
+
 // Connect to MongoDB
 mongoose
   .connect(
@@ -56,7 +60,7 @@ mongoose
       }
     });
 
-    const PORT = 8082;
+    const PORT = 3002;
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
