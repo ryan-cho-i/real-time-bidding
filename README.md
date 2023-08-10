@@ -38,19 +38,11 @@
 
 8. Consumer2 stores the data {"fire" : false" , "click" : "false"} in MongoDB.
 
-9. After receiving the CDN link for the ad, the client fires the impression pixel, using Web Socket (http://localhost:8081/), and sends the log to the consumer2 (http://consumer2:3002/firePixel)
+9. After receiving the CDN link about advertisement, display the advertisement.
 
-10. Whenever data is received ("fire", "click"), Consumer2 update the data.
+10. Check whether the advertisement is displayed. Then, the client fires the impression pixel (http://localhost:3002/firePixel/${id})
 
-This basic structural overview depicts a robust system capable of handling advertising bids efficiently while negating potential race conditions using Redis.
-
-Going further, asynchronous processing allows for a non-blocking operation, enhancing the system's efficiency. This is especially beneficial for systems experiencing high traffic, as the tasks of ad posting and data storage do not have to wait for the completion of previous tasks.
-
-Moreover, employing Kafka ensures the reliable delivery of messages. Kafka provides fault tolerance via message replication across multiple servers and ensures that messages are processed in the sequence they were sent, vital for systems where event order matters.
-
-Lastly, by storing data on a separate consumer server, the project enforces the separation of concerns. This division aids in maintaining a clean system architecture, where each component is responsible for a specific function. This approach simplifies not only system organization but also debugging and maintenance.
-
-In conclusion, this architecture provides an efficient approach to handling and distributing ad bids. By harnessing technologies like Redis and Kafka, this system ensures efficient processing, robust handling of potential race conditions, and dependable delivery of messages. It achieves a balance between speed, reliability, and maintainability, making it an ideal solution for high-traffic web platforms seeking efficient ad management.
+11. Whenever data is received ("fire", "click"), Consumer2 update the data.
 
 ## 4. Why Do I use Redis?
 
@@ -95,20 +87,35 @@ docker-compose up
 
 After typing client address (http://localhost:8080/) on your browser, advertisement will show up
 
-##
+## 6. 어려웠던 점
 
-테스트 하는 과정에서 어려웠던 점
+1. app.get("/", (req, res) => {
+   mongoose.connect()
+   })
 
-mongoo
+VS
 
-oDB
-mongoose
-.connect(
-"mongodb+srv://soo:12341@rtb.e20asj4.mongodb.net/?retryWrites=true&w=majority"
+mongoose.connect().then(
+app.get("/", (req, res) => { })
 )
-.then(() => {
-console.log("MongoDB Connected");
 
-    app.get("/firePixel/:id", async (req, res) => {
+기본적인 콜백 순서를 바꾸는 것만으로도 많은 속도의 향상을 이뤄냈다.
 
-기본적인 콜백의 순서만 바뀌어도 편하다
+2. 광고가 표시되었는지 안되었는지 판단하는 함수의 위치
+
+socket.addEventListener("message", ()=>{
+image.src = url;
+checkAd()
+})
+
+vs
+
+image.addEventListener("load", ()=>{
+checkAd()
+})
+
+socket.addEventListener("message", ()=>{
+image.src = url;
+})
+
+즉 이미지 로드가 끝난 뒤에, checkAd() 함수를 실행시켜주어야 했다.
