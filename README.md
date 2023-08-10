@@ -90,7 +90,7 @@ After typing client address (http://localhost:8080/) on your browser, a advertis
 
 6. Callback Order Optimization:
 
-1) The position of the MongoDB Connection function
+   - The position of the MongoDB Connection function
 
 ```
 app.get("/", (req, res) => { mongoose.connect() })
@@ -102,7 +102,7 @@ VS
 mongoose.connect().then( app.get("/", (req, res) => { }) )
 ```
 
-2. The position of the function that determines whether the advertisement has been displayed or not
+- The position of the function that determines whether the advertisement has been displayed or not
 
 ```
 socket.addEventListener("message", ()=>{
