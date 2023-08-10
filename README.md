@@ -2,7 +2,7 @@
 
 ## 1. Implement Video
 
-<img width="80%" src="https://github.com/CodingStorageofSoo/kafka-redis-js/assets/78337318/5ad5ef9e-01eb-46d1-875b-a942830537dd"/>
+<img width="80%" src="https://github.com/ryan-cho-i/real-time-bidding/assets/78337318/e1d94926-0002-41b0-b4a6-4e2172b70c76"/>
 
 ## 2. Environment
 
