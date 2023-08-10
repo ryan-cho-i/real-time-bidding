@@ -92,30 +92,30 @@ After typing client address (http://localhost:8080/) on your browser, a advertis
 
    - The position of the MongoDB Connection function
 
-```
-app.get("/", (req, res) => { mongoose.connect() })
-```
+   ```
+   app.get("/", (req, res) => { mongoose.connect() })
+   ```
 
-VS
+   VS
 
-```
-mongoose.connect().then( app.get("/", (req, res) => { }) )
-```
+   ```
+   mongoose.connect().then( app.get("/", (req, res) => { }) )
+   ```
 
-- The position of the function that determines whether the advertisement has been displayed or not
+   - The position of the function that determines whether the advertisement has been displayed or not
 
-```
-socket.addEventListener("message", ()=>{
-image.src = url;
-checkAd()
-})
-```
+   ```
+   socket.addEventListener("message", ()=>{
+   image.src = url;
+   checkAd()
+   })
+   ```
 
-vs
+   vs
 
-```
-image.addEventListener("load", ()=>{ checkAd() })
-socket.addEventListener("message", ()=>{ image.src = url; })
-```
+   ```
+   image.addEventListener("load", ()=>{ checkAd() })
+   socket.addEventListener("message", ()=>{ image.src = url; })
+   ```
 
-In other words, the checkAd() function must be executed after the image has finished loading.
+   In other words, the checkAd() function must be executed after the image has finished loading.
