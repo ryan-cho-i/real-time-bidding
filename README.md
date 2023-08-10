@@ -4,7 +4,23 @@
 
 <img width="80%" src="https://github.com/ryan-cho-i/real-time-bidding/assets/78337318/e1d94926-0002-41b0-b4a6-4e2172b70c76"/>
 
-## 2. Environment
+## 2. Usage
+
+Download this github repository.
+
+```
+git clone https://github.com/ryan-cho-i/real-time-bidding.git
+```
+
+Implement docker-compose
+
+```
+docker-compose up
+```
+
+After typing client address (http://localhost:8080/) on your browser, a advertisement and an impression pixel will show up
+
+## 3. Environment
 
 1. Web : ExpressJS
 
@@ -12,7 +28,7 @@
 
 3. DevOps : Docker, Kafka, AWS
 
-## 3. System Design
+## 4. System Design
 
 1. When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST to the SSP Server. (http://localhost:3000/)
 
@@ -44,90 +60,62 @@
 
 11. Whenever data is received ("fire", "click"), Consumer2 update the data.
 
-## 4. Problem & Solution
+## 5. Problem & Solution
 
-3. 데이터베이스 접근 속도
+1. Database Access Speed
 
-4. Ranking System
+   - Problem: Slow access speed to the database.
+   - Solution: By using Redis, an in-memory database, this solution dramatically improves data retrieval speed, thus reducing latency.
 
-5. Race Condition
+2. Ranking System
 
-6. 병렬 처리의 어려움
+   - Problem: High time complexity O(N) in inserting data.
+   - Solution: Applying a Redis's Sorted Set (Binary Search Tree), this approach reduces time complexity to O(log N) for insertions and search operations.
+   - If the system only needed to identify the top-ranked item, a Heap would have been more appropriate. However, since the plan was to store up to the top 10 ranks in the database, the Sorted Set data structure was selected.
 
-7. 이미지 데이터 저장
+3. Race Condition
 
-## 4. Why Do I use Redis?
+   - Problem: Potential issues with simultaneous Responses accessing the same resource.
+   - Solution: Since Redis operates on a single-threaded basis, it inherently resolves race conditions.
 
-Redis has several advantages:
+4. Challenges of Parallel Processing
 
-1.  Redis operates on a single thread, making it immune to race conditions.
-2.  As an in-memory storage solution, Redis offers swift data processing.
-3.  Redis supports the SortedSet data structure, which delivers an efficient O(logN) time complexity for both data insertion and retrieval.
+   - Problem: Bottleneck issues when a single server processes everything.
+   - Solution: Implementing Kafka as a Message Broker for distributed processing enables the system to scale and distribute loads efficiently. This is vital for large-scale implementations where horizontal scaling is essential to maintain performance.
 
-4.  Time Complexity
+5. Image Data Storage
 
-1) Heap
+   - Problem: Need for fast access to image data.
+   - Solution: Storing images using a CDN optimizes retrieval speed by caching content closer to users. This approach enhances user experience by minimizing load times for frequently accessed content like images.
 
-   - Insertion: O(log N)
-   - Deletion: O(log N) (for deleting root), O(N) (for deleting any element)
-   - Peek (retrieving max or min): O(1)
+6. Callback Order Optimization:
 
-2) SortedSet
-   - Insertion: O(log N)
-   - Deletion: O(log N)
-   - Searching: O(log N)
-
-2. Duplicates
-
-1) Heap: A heap allows duplicate values. This means you can insert the value '5' twice in the heap, and it will appear twice.
-
-2) SortedSet: SortedSet doesn't allow insertion of duplicate items. If you attempt to insert a duplicate, the insert operation will simply ignore the request.
-
-## 5. Usage
-
-Download this github repository.
+1) The position of the MongoDB Connection function
 
 ```
-git clone https://github.com/ryan-cho-i/real-time-bidding.git
+app.get("/", (req, res) => { mongoose.connect() })
 ```
-
-Implement docker-compose
-
-```
-docker-compose up
-```
-
-After typing client address (http://localhost:8080/) on your browser, advertisement will show up
-
-## 6. 어려웠던 점
-
-1. app.get("/", (req, res) => {
-   mongoose.connect()
-   })
 
 VS
 
-mongoose.connect().then(
-app.get("/", (req, res) => { })
-)
+```
+mongoose.connect().then( app.get("/", (req, res) => { }) )
+```
 
-기본적인 콜백 순서를 바꾸는 것만으로도 많은 속도의 향상을 이뤄냈다.
+2. The position of the function that determines whether the advertisement has been displayed or not
 
-2. 광고가 표시되었는지 안되었는지 판단하는 함수의 위치
-
+```
 socket.addEventListener("message", ()=>{
 image.src = url;
 checkAd()
 })
+```
 
 vs
 
-image.addEventListener("load", ()=>{
-checkAd()
-})
+```
+image.addEventListener("load", ()=>{ checkAd() })
+socket.addEventListener("message", ()=>{ image.src = url; })
+```
 
-socket.addEventListener("message", ()=>{
-image.src = url;
-})
-
-즉 이미지 로드가 끝난 뒤에, checkAd() 함수를 실행시켜주어야 했다.
+In other words, the checkAd() function must be executed after the image has finished loading.
