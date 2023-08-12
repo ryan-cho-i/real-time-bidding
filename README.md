@@ -90,7 +90,7 @@ After typing client address (http://localhost:8080/) on your browser, a advertis
 
 6. Callback Order Optimization:
 
-   - The position of the MongoDB Connection function
+   - The position of the MongoDB Connection function.
 
    ```
    app.get("/", (req, res) => { mongoose.connect() })
