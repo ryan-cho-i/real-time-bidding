@@ -36,7 +36,7 @@ services:
       - "3000:3000"
 
   consumer1:
-    build: ./consumer1
+    build: ./adDeliveryServer
     container_name: consumer1
     depends_on:
       - kafka
@@ -44,7 +44,7 @@ services:
       - .env
 
   consumer2:
-    build: ./consumer2
+    build: ./logStorageServer
     container_name: consumer2
     depends_on:
       - kafka

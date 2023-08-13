@@ -1,6 +1,6 @@
 /client/node_modules
-/consumer1/node_modules
-/consumer2/node_modules
+/adDeliveryServer/node_modules
+/logStorageServer/node_modules
 /dsp/node_modules
 /ssp/node_modules
 /update/node_modules
