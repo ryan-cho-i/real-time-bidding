@@ -119,3 +119,7 @@ After typing client address (http://localhost:8080/) on your browser, a advertis
    ```
 
    In other words, the checkAd() function must be executed after the image has finished loading.
+
+7. Various API
+
+- GraphQL
