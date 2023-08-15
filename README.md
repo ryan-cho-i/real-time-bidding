@@ -30,7 +30,7 @@ After typing client address (http://localhost:8080/) on your browser, a advertis
 
 ## 4. System Design
 
-<img width="80%" src="https://github.com/ryan-cho-i/real-time-bidding/assets/78337318/2d97c776-2b84-4676-b635-fa8469fcdab6"/>
+<img width="80%" src="https://github.com/ryan-cho-i/real-time-bidding/assets/78337318/41402a17-c361-49f5-910f-2e431a0db01a"/>
 
 1. When the client page (http://localhost:8080/) is opened, it automatically sends a HTTP POST REQUEST to the SSP Server. (http://localhost:3000/)
 
